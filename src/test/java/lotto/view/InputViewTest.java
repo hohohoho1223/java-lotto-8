@@ -1,8 +1,13 @@
 package lotto.view;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -33,4 +38,41 @@ class InputViewTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("1000원 단위");
     }
+
+    @DisplayName("당첨 번호가 6개가 아닌 경우 예외 발생 — 여러 케이스 검증")
+    @ParameterizedTest
+    @ValueSource(strings = {"1,2,3,4,5", "1,2,3,4,5,6,7"})
+    void 당첨_번호가_6개가_아니면_예외(String input) {
+        List<Integer> lottoNumbers = Arrays.stream(input.split(","))
+                .map(String::trim)
+                .map(InputView::parseToInt)
+                .collect(Collectors.toList());
+
+        assertThatThrownBy(() -> InputView.validateLottoNumbers(lottoNumbers))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("6개");
+    }
+
+    @Test
+    void 당첨_번호에_중복이_있으면_예외() {
+        List<Integer> lottoNumbers = List.of(1, 1, 3, 4, 5, 6);
+        assertThatThrownBy(() -> InputView.validateLottoNumbers(lottoNumbers))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("중복");
+    }
+
+    @DisplayName("당첨 번호가 1~45 범위를 벗어나면 예외 발생")
+    @ParameterizedTest
+    @ValueSource(strings = {"0,2,3,4,5,6", "1,2,3,4,5,46", "0,1,2,3,4,100"})
+    void 당첨_번호가_범위를_벗어나면_예외(String input) {
+        List<Integer> lottoNumbers = Arrays.stream(input.split(","))
+                .map(String::trim)
+                .map(InputView::parseToInt)
+                .collect(Collectors.toList());
+
+        assertThatThrownBy(() -> InputView.validateLottoNumbers(lottoNumbers))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("1부터 45");
+    }
 }
+
