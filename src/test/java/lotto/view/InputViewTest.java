@@ -74,5 +74,30 @@ class InputViewTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("1부터 45");
     }
+
+    @DisplayName("보너스 번호가 1~45 범위를 벗어나면 예외 발생")
+    @Test
+    void 보너스_번호_범위_예외() {
+        //기존에 입력한 로또 번호
+        List<Integer> lottoNumbers = List.of(1, 2, 3, 4, 5, 6);
+        int bonusNumber = 46;
+
+        assertThatThrownBy(() -> InputView.validateBonusNumber(lottoNumbers, bonusNumber))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("1부터 45");
+    }
+
+
+    @DisplayName("보너스 번호가 당첨 번호와 중복될 경우 예외 발생")
+    @ParameterizedTest
+    @ValueSource(ints = {1, 3, 6})
+    void 보너스_번호에_당첨_번호와_중복이_있으면_예외(int bonusNumber) {
+        List<Integer> lottoNumbers = List.of(1, 2, 3, 4, 5, 6);
+
+        assertThatThrownBy(() -> InputView.validateBonusNumber(lottoNumbers, bonusNumber))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("중복");
+
+    }
 }
 
