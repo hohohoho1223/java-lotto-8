@@ -18,6 +18,9 @@ public enum LottoRank {
         this.matchBonus = matchBonus;
         this.prize = prize;
     }
+    public int getMatchCount() {
+        return matchCount;
+    }
 
     public int getPrize() {
         return prize;
@@ -31,4 +34,6 @@ public enum LottoRank {
         if (matchCount == 3) return FIFTH;
         return NONE;
     }
+
+
 }
