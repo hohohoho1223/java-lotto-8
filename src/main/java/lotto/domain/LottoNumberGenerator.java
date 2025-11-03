@@ -4,7 +4,7 @@ import camp.nextstep.edu.missionutils.Randoms;
 import java.util.List;
 
 public class LottoNumberGenerator {
-    public Lotto Generator() {
+    public Lotto generator() {
         List<Integer> randomWinNumbers = Randoms.pickUniqueNumbersInRange(1, 45, 6)
                 .stream()
                 .sorted() // 오름차순 정렬
