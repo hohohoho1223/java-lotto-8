@@ -9,11 +9,17 @@ import java.util.stream.Collectors;
 public class InputView {
 
     public static int inputPurchaseAmount() {
-        System.out.println("구입 금액을 입력해주세요!:");
-        String input = Console.readLine();
-        int amount = parseToInt(input); // 중복된 코드(예외처리)는 메서드로 추출하기 위함
-        validateAmount(amount);
-        return amount;
+        while (true) {
+            try {
+                System.out.println("구입 금액을 입력해 주세요.");
+                String input = Console.readLine();
+                int amount = parseToInt(input);
+                validateAmount(amount);
+                return amount;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage()); // [ERROR] 메시지 출력
+            }
+        }
     }
 
     public static int parseToInt(String input) {
@@ -34,14 +40,20 @@ public class InputView {
     }
 
     public static List<Integer> inputLottoNumber() {
-        System.out.println("예상되는 당첨 번호를 입력해주세요! (단, 쉼표(,)를 이용해 구분하여 입력하세요!:");
-        String input = Console.readLine();
-        List<Integer> lottoNumbers = Arrays.stream(input.split(","))
-                .map(s -> s.trim())
-                .map(InputView::parseToInt)
-                .collect(Collectors.toList());
-        validateLottoNumbers(lottoNumbers);
-        return lottoNumbers;
+        while (true) {
+            try {
+                System.out.println("당첨 번호를 입력해 주세요.");
+                String input = Console.readLine();
+                List<Integer> lottoNumbers = Arrays.stream(input.split(","))
+                        .map(String::trim)
+                        .map(InputView::parseToInt)
+                        .collect(Collectors.toList());
+                validateLottoNumbers(lottoNumbers);
+                return lottoNumbers;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public static void validateLottoNumbers(List<Integer> lottoNumbers) {
@@ -57,10 +69,16 @@ public class InputView {
     }
 
     public static int inputBonusNumber(List<Integer> lottoNumbers) {
-        System.out.println("보너스 번호를 입력해 주세요!");
-        int bonusNumber = parseToInt(Console.readLine());
-        validateBonusNumber(lottoNumbers, bonusNumber);
-        return bonusNumber;
+        while (true) {
+            try {
+                System.out.println("보너스 번호를 입력해 주세요!");
+                int bonusNumber = parseToInt(Console.readLine());
+                validateBonusNumber(lottoNumbers, bonusNumber);
+                return bonusNumber;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public static void validateBonusNumber(List<Integer> lottoNumbers, int bonusNumber) {
