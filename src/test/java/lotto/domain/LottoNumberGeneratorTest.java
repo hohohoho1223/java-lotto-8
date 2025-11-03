@@ -11,7 +11,7 @@ public class LottoNumberGeneratorTest {
     @Test
     void 생성된_로또_번호_검증() {
         LottoNumberGenerator generator = new LottoNumberGenerator();
-        Lotto lotto = generator.generator();
+        Lotto lotto = generator.generate();
 
         List<Integer> testNumbers = lotto.getNumbers(); // 기존 Lotto 객체 내부의 numbers필드를 참조해서 불러온 것
 
